@@ -13,7 +13,7 @@ pipeline {
 
         stage('Fetch_Code'){
             steps {
-                git branch: 'main', url:'https://github.com/hkhcoder/vprofile-project.git'
+                git branch: 'main', url:'https://github.com/MohdKumail786/Jenkins_CI_Project.git'
             }
 
         }
