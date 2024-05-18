@@ -11,12 +11,13 @@ pipeline {
     stages{
 
 
-        stage('Fetch_Code'){
+     /*   stage('Fetch_Code'){
             steps {
                 git branch: 'main', url:'https://github.com/MohdKumail786/Jenkins_CI_Project.git'
             }
-
         }
+	  not required when running this a a github_project  */
+	    
         stage('BUILD'){
             steps {
                 sh 'mvn clean install -DskipTests'
