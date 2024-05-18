@@ -76,22 +76,18 @@ pipeline {
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version} ARTVERSION";
                         nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            groupId: pom.groupId,
-                            version: ARTVERSION,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            nexusVersion: 'nexus3',
+                            protocol: 'http',
+                            nexusUrl:'54.226.77.155:8081',
+                            groupId: 'QA',
+                            version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                            repository: 'vprofile-repo',
+                            credentialsId: 'NexusLogin',
                             artifacts: [
-                                [artifactId: pom.artifactId,
+                                [artifactId: 'vpropapp',
                                 classifier: '',
-                                file: artifactPath,
-                                type: pom.packaging],
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: "pom.xml",
-                                type: "pom"]
+                                file: 'target/vprofile-v2.war'
+                                type:'war'], 
                             ]
                         );
                     } 
