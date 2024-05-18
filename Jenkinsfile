@@ -1,13 +1,24 @@
 pipeline {
     
 	agent any
-/*	
+	
 	tools {
-        maven "maven3"
+        maven "MAVEN3"
+        jdk "OracleJDK11"
     }
-*/	
-    environment {
-        NEXUS_VERSION = "nexus3"
+	
+    
+    stages{
+
+
+        stage('Fetch_Code'){
+            steps {
+                git branch: 'main', url:'https://github.com/hkhcoder/vprofile-project.git'
+            }
+
+        }
+        stage('BUILD'){
+            steps {
                 sh 'mvn clean install -DskipTests'
             }
             post {
@@ -23,8 +34,8 @@ pipeline {
                 sh 'mvn test'
             }
         }
-
-	stage('INTEGRATION TEST'){
+    
+    stage('INTEGRATION TEST'){
             steps {
                 sh 'mvn verify -DskipUnitTests'
             }
@@ -40,8 +51,8 @@ pipeline {
                 }
             }
         }
-
-        stage('CODE ANALYSIS with SONARQUBE') {
+        
+          stage('CODE ANALYSIS with SONARQUBE') {
           
 		  environment {
              scannerHome = tool 'sonarscanner4'
@@ -58,14 +69,12 @@ pipeline {
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
-
-            timeout(time: 10, unit: 'MINUTES') {
+               timeout(time: 10, unit: 'MINUTES') {
                waitForQualityGate abortPipeline: true
-            }
+                }
           }
         }
-
-        stage("Publish to Nexus Repository Manager") {
+    stage("Publish to Nexus Repository Manager") {
             steps {
                 script {
                     pom = readMavenPom file: "pom.xml";
@@ -97,9 +106,5 @@ pipeline {
                 }
             }
         }
-
-
-    }
-
-
+}
 }
